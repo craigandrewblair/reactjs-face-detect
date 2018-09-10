@@ -3,8 +3,8 @@ import React from 'react';
 const Navigation = () => {
 
     return (
-        <nav style={{ display:"flex", justifyContent:"flex-end" }}>
-            <p>Sign Out</p>
+        <nav style={{width: "300px"}}>
+            <p className="f3 ma4 dim pointer white">Sign Out</p>
         </nav>
     )
 
