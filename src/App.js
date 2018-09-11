@@ -7,6 +7,19 @@ import Score from './components/Score/Score';
 import Particles from './components/Particles/Particles';
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+        input: ''
+    }
+  }
+
+  onInputChange = (event) => {
+    console.log(this.state.input);
+    this.setState({
+      input: event.target.value
+    });
+  }
 
   render() {
     return (
@@ -18,7 +31,7 @@ class App extends Component {
         <Navigation />
       </header>
       <main style={{width:"100vw", display:"flex", justifyContent:"center"}}>
-        <ImageUrlForm />
+        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input}/>
         {/* <FaceRecognition /> */}
         {/* <Detect /> */}
       </main>
