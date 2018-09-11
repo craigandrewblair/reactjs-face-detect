@@ -16,7 +16,8 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-        input: ''
+        input: '',
+        imageUrl: 'https://samples.clarifai.com/face-det.jpg'
     }
   }
 
@@ -27,11 +28,13 @@ class App extends Component {
     });
   }
 
-  onDetectClick = () => {
-    console.log('clicked');
-    app.models.predict(Clarifai.GENERAL_MODEL, "https://samples.clarifai.com/face-det.jpg").then(
+  onDetectClick = (event) => {
+    this.setState({
+      imageUrl: this.state.input
+    });
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl).then(
     function(response) {
-      console.log(response);
+      console.log(response)
     },
     function(err) {
       console.log(err);
@@ -42,15 +45,15 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{position:"fixed", height:"100vh"}}>
-      <Particles />
+      {/* <Particles /> */}
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
         <Score />
         <Navigation />
       </header>
       <main style={{width:"100vw",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between"}}>
-        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onDetectClick}/>
-        <FaceRecognition />
+        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onDetectClick} />
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
       </main>
       </div>
     );

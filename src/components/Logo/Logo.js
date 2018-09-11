@@ -6,7 +6,7 @@ const Logo = () => {
 
     return (
         <div className="spin-rotation" style={{width: "300px"}}>
-            <img src={logo} style={{height:'100px'}}/>
+            <img src={logo} style={{height:'100px'}} alt=""/>
         </div>
     )
 
