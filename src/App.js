@@ -3,6 +3,7 @@ import './App.css';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Score from './components/Score/Score';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
@@ -47,9 +48,9 @@ class App extends Component {
         <Score />
         <Navigation />
       </header>
-      <main style={{width:"100vw", display:"flex", justifyContent:"center"}}>
+      <main style={{width:"100vw",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between"}}>
         <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onDetectClick}/>
-        {/* <FaceRecognition /> */}
+        <FaceRecognition />
       </main>
       </div>
     );
