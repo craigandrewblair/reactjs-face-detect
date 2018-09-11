@@ -5,6 +5,11 @@ import Logo from './components/Logo/Logo';
 import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
 import Score from './components/Score/Score';
 import Particles from './components/Particles/Particles';
+import Clarifai from 'clarifai';
+
+const app = new Clarifai.App({
+  apiKey: process.env.REACT_APP_FACE_KEY
+ });
 
 class App extends Component {
   constructor(){
@@ -21,6 +26,18 @@ class App extends Component {
     });
   }
 
+  onDetectClick = () => {
+    console.log('clicked');
+    app.models.predict(Clarifai.GENERAL_MODEL, "https://samples.clarifai.com/face-det.jpg").then(
+    function(response) {
+      console.log(response);
+    },
+    function(err) {
+      console.log(err);
+    }
+  );
+  }
+
   render() {
     return (
       <div className="App" style={{position:"fixed", height:"100vh"}}>
@@ -31,9 +48,8 @@ class App extends Component {
         <Navigation />
       </header>
       <main style={{width:"100vw", display:"flex", justifyContent:"center"}}>
-        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input}/>
+        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onDetectClick}/>
         {/* <FaceRecognition /> */}
-        {/* <Detect /> */}
       </main>
       </div>
     );
