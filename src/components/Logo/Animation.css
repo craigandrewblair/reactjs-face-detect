@@ -1,0 +1,11 @@
+.spin-rotation{
+  animation: spin-rotation 3s linear 1s infinite running;
+}
+
+@keyframes spin-rotation {
+  0% { transform: scaleX(1)}
+  50% { transform: scaleX(0)} 
+  100% { transform: scaleX(1)} 
+}
+
+

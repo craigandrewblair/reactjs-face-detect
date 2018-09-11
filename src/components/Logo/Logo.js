@@ -1,14 +1,12 @@
 import React from 'react';
 import logo from '../../images/logo.svg';
-import Tilt from 'react-tilt';
+import './Animation.css';
 
 const Logo = () => {
 
     return (
-        <div style={{width: "300px"}}>
-            <Tilt className="Tilt" options={{ max : 25 }} style={{ height: 250, width: 250 }}>
-                <img src={logo} style={{height:'100px'}}/>
-            </Tilt>
+        <div className="spin-rotation" style={{width: "300px"}}>
+            <img src={logo} style={{height:'100px'}}/>
         </div>
     )
 
