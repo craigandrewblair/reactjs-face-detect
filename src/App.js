@@ -5,7 +5,6 @@ import Logo from './components/Logo/Logo';
 import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Score from './components/Score/Score';
-import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
 const app = new Clarifai.App({
@@ -34,7 +33,7 @@ class App extends Component {
     });
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl).then(
     function(response) {
-      console.log(response)
+      console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
     },
     function(err) {
       console.log(err);
