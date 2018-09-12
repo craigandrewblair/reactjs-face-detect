@@ -33,32 +33,39 @@ class App extends Component {
   }
 
   calcBoxLocation = (location) => {
+    let arr = [];
     let image = document.getElementById('uploadImage');
-    let pos = location.outputs[0].data.regions[0].region_info.bounding_box;
     let imageHeight = Number(image.height);
     let imageWidth = Number(image.width);
-    let left_col = pos.left_col * imageWidth;
-    let top_row = pos.top_row * imageHeight;
-    let right_col = imageWidth - (pos.right_col * imageWidth);
-    let bottom_row = imageHeight - (pos.bottom_row * imageHeight);
-    console.log(this.state.box);
-    return (
-      {top_row: top_row, bottom_row: bottom_row, left_col: left_col, right_col: right_col}
-    );
+    for(let i = 0; i < location.outputs[0].data.regions.length; i++){
+      let pos = location.outputs[0].data.regions[i].region_info.bounding_box;
+      let left_col = pos.left_col * imageWidth;
+      let top_row = pos.top_row * imageHeight;
+      let right_col = imageWidth - (pos.right_col * imageWidth);
+      let bottom_row = imageHeight - (pos.bottom_row * imageHeight);
+      arr = [...arr, {top_row: top_row, bottom_row: bottom_row, left_col: left_col, right_col: right_col} ]
+    }
+    
+    return(
+      arr.map(function(item){
+        return item;
+      })
+    )
   }
 
   displayBox = (boxCoords) => {
     this.setState({box: boxCoords});
+    console.log(this.state.box);
   }
 
   onInputChange = (event) => {
-    console.log(this.state.input);
     this.setState({
       input: event.target.value
     });
   }
 
   render() {
+    
     return (
       <div className="App" style={{minHeight:"100vh"}}>
       {/* <Particles /> */}
