@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Tilt from 'react-tilt';
 import './FaceRecognition.css';
+import Box from './Box';
 
 class FaceRecognition extends Component {
 
@@ -11,21 +12,25 @@ class FaceRecognition extends Component {
         }
     }
 
+    createBox = () => {
+
+    }
+
     displayBox = () => {
-        if(this.props.box[0]){
-            console.log(this.props.box[0]);
-            return(
-                <div 
-                className="bounding-box"
-                style={{
-                    right: this.props.box[0].right_col,
-                    bottom: this.props.box[0].bottom_row,
-                    left: this.props.box[0].left_col,
-                    top: this.props.box[0].top_row
-                }}>
-                
-                </div>
-            )
+        for(let i = 0; i < this.props.box.length; i++){
+            if(this.props.box[i]){
+                console.log(this.props.box[i]);
+                return(
+                    <Box
+                    className="bounding-box"
+                    style={{
+                        right: this.props.box[i].right_col,
+                        bottom: this.props.box[i].bottom_row,
+                        left: this.props.box[i].left_col,
+                        top: this.props.box[i].top_row
+                    }}/>
+                )
+            }
         }
     }
     
