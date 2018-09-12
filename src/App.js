@@ -21,8 +21,34 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    this.onDetectClick();
+  onDetectClick = () => {
+    this.setState({
+      imageUrl: this.state.input
+    });
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+    .then(response =>
+    this.displayBox(this.calcBoxLocation(response))
+    .catch(err => console.log(err))
+  )
+  }
+
+  calcBoxLocation = (location) => {
+    let image = document.getElementById('uploadImage');
+    let pos = location.outputs[0].data.regions[0].region_info.bounding_box;
+    let imageHeight = Number(image.height);
+    let imageWidth = Number(image.width);
+    let left_col = pos.left_col * imageWidth;
+    let top_row = pos.top_row * imageHeight;
+    let right_col = imageWidth - (pos.right_col * imageWidth);
+    let bottom_row = imageHeight - (pos.bottom_row * imageHeight);
+    console.log(this.state.box);
+    return (
+      {top_row: top_row, bottom_row: bottom_row, left_col: left_col, right_col: right_col}
+    );
+  }
+
+  displayBox = (boxCoords) => {
+    this.setState({box: boxCoords});
   }
 
   onInputChange = (event) => {
@@ -32,35 +58,9 @@ class App extends Component {
     });
   }
 
-  getBoxLocation = (location) => {
-    let image = document.getElementById('uploadImage');
-    let boxPos = location.outputs[0].data.regions[0].region_info.bounding_box;
-    let imageHeight = Number(image.height);
-    let imageWidth = Number(image.width);
-    let left_col = boxPos.left_col * imageWidth;
-    let top_row = boxPos.top_row * imageHeight;
-    let right_col = imageWidth - (boxPos.right_col * imageWidth);
-    let bottom_row = imageHeight - (boxPos.bottom_row * imageHeight);
-    this.setState({
-      box: {top_row: top_row, bottom_row: bottom_row, left_col: left_col, right_col: right_col}
-    });
-    console.log(this.state.box);
-  }
-
-  onDetectClick = () => {
-    this.setState({
-      imageUrl: this.state.input
-    });
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-    .then(response =>
-    this.getBoxLocation(response)
-    .catch(err => console.log(err))
-  )
-  }
-
   render() {
     return (
-      <div className="App" style={{position:"fixed", height:"100vh"}}>
+      <div className="App" style={{minHeight:"100vh"}}>
       {/* <Particles /> */}
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
