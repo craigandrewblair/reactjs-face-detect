@@ -5,6 +5,7 @@ import Logo from './components/Logo/Logo';
 import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Score from './components/Score/Score';
+import Signin from './components/Signin/Signin';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
@@ -18,7 +19,8 @@ class App extends Component {
     this.state = {
         input: 'https://samples.clarifai.com/face-det.jpg',
         imageUrl: 'https://samples.clarifai.com/face-det.jpg',
-        box: {}
+        box: {},
+        signin: true
     }
   }
 
@@ -71,10 +73,21 @@ class App extends Component {
         <Score />
         <Navigation />
       </header>
+      
       <main style={{width:"100vw",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between"}}>
+      { this.state.signin 
+      ? 
+      <div style={{zIndex:"2"}}>
+        <Signin /> 
+      </div>
+      :
+      <div>
         <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onDetectClick} />
         <FaceRecognition imageUrl={this.state.imageUrl} box={this.state.box}/>
+      </div>
+      }
       </main>
+
       </div>
     );
   }
