@@ -5,6 +5,7 @@ import Logo from './components/Logo/Logo';
 import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Score from './components/Score/Score';
+import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
 const app = new Clarifai.App({
@@ -64,7 +65,7 @@ class App extends Component {
     
     return (
       <div className="App" style={{minHeight:"100vh"}}>
-      {/* <Particles /> */}
+      <Particles />
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
         <Score />

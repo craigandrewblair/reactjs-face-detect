@@ -24,7 +24,8 @@ class FaceRecognition extends Component {
                         right: box.right_col,
                         bottom: box.bottom_row,
                         left: box.left_col,
-                        top: box.top_row
+                        top: box.top_row,
+                        zIndex: "2"
                     }}/>
                     )}
                 </div>
@@ -35,7 +36,7 @@ class FaceRecognition extends Component {
     render(){
         return (
         
-            <div>
+            <div style={{zIndex: "2"}}>
                 <Tilt style={{width:"600px", padding:"30px", margin:"30px"}}>
                 <img id="uploadImage" src={this.props.imageUrl} style={{maxWidth:"500px"}} alt=""/>
                 {this.displayBox()}
