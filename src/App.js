@@ -6,6 +6,7 @@ import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Score from './components/Score/Score';
 import Signin from './components/Signin/Signin';
+import Register from './components/Register/Register';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
@@ -20,7 +21,7 @@ class App extends Component {
         input: 'https://samples.clarifai.com/face-det.jpg',
         imageUrl: 'https://samples.clarifai.com/face-det.jpg',
         box: {},
-        signin: true
+        signin: 'signin'
     }
   }
 
@@ -48,7 +49,6 @@ class App extends Component {
         bottom_row: imageHeight - (pos.bottom_row * imageHeight)
       }
     })
-    console.log(typeof(arr));
     return arr;
   }
 
@@ -63,6 +63,30 @@ class App extends Component {
     });
   }
 
+  signOutHandler = () => {
+    this.setState({
+      signin: 'signin'
+    })
+  }
+
+  signInHandler = () => {
+    this.setState({
+      signin: 'home'
+    })
+  }
+
+  registerHandler = () => {
+    this.setState({
+      signin: 'register'
+    })
+  }
+
+  registerPageHandler = () => {
+    this.setState({
+      signin: 'home'
+    })
+  }
+
   render() {
     
     return (
@@ -70,15 +94,21 @@ class App extends Component {
       <Particles />
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
-        <Score />
-        <Navigation />
+        { this.state.signin === 'home' ? <Score /> : <div></div> }
+        <Navigation signOutHandler={this.signOutHandler} signinState={this.state.signin}/>
       </header>
       
       <main style={{width:"100vw",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between"}}>
-      { this.state.signin 
+      { this.state.signin === 'signin'
       ? 
       <div style={{zIndex:"2"}}>
-        <Signin /> 
+        <Signin signInHandler={this.signInHandler} registerHandler={this.registerHandler}/> 
+      </div>
+      : 
+      this.state.signin === 'register' 
+      ?
+      <div style={{zIndex:"2"}}>
+        <Register registerPageHandler={this.registerPageHandler}/> 
       </div>
       :
       <div>
