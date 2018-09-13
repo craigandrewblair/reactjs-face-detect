@@ -33,24 +33,20 @@ class App extends Component {
   }
 
   calcBoxLocation = (location) => {
-    let arr = [];
     let image = document.getElementById('uploadImage');
     let imageHeight = Number(image.height);
     let imageWidth = Number(image.width);
-    for(let i = 0; i < location.outputs[0].data.regions.length; i++){
-      let pos = location.outputs[0].data.regions[i].region_info.bounding_box;
-      let left_col = pos.left_col * imageWidth;
-      let top_row = pos.top_row * imageHeight;
-      let right_col = imageWidth - (pos.right_col * imageWidth);
-      let bottom_row = imageHeight - (pos.bottom_row * imageHeight);
-      arr = [...arr, {top_row: top_row, bottom_row: bottom_row, left_col: left_col, right_col: right_col} ]
-    }
-    
-    return(
-      arr.map(function(item){
-        return item;
-      })
-    )
+    let arr = location.outputs[0].data.regions.map(region => {
+    let pos = region.region_info.bounding_box;  
+    return{
+        left_col: pos.left_col * imageWidth,
+        top_row: pos.top_row * imageHeight,
+        right_col: imageWidth - (pos.right_col * imageWidth),
+        bottom_row: imageHeight - (pos.bottom_row * imageHeight)
+      }
+    })
+    console.log(typeof(arr));
+    return arr;
   }
 
   displayBox = (boxCoords) => {

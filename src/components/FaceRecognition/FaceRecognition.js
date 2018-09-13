@@ -12,28 +12,26 @@ class FaceRecognition extends Component {
         }
     }
 
-    createBox = () => {
-
-    }
-
     displayBox = () => {
-        for(let i = 0; i < this.props.box.length; i++){
-            if(this.props.box[i]){
-                console.log(this.props.box[i]);
-                return(
+        let boxes = [...this.props.box];
+        if(this.props.box){
+            return (
+                <div>
+                    {boxes.map((box) =>
                     <Box
                     className="bounding-box"
                     style={{
-                        right: this.props.box[i].right_col,
-                        bottom: this.props.box[i].bottom_row,
-                        left: this.props.box[i].left_col,
-                        top: this.props.box[i].top_row
+                        right: box.right_col,
+                        bottom: box.bottom_row,
+                        left: box.left_col,
+                        top: box.top_row
                     }}/>
-                )
-            }
+                    )}
+                </div>
+            )
         }
     }
-    
+
     render(){
         return (
         
@@ -41,7 +39,6 @@ class FaceRecognition extends Component {
                 <Tilt style={{width:"600px", padding:"30px", margin:"30px"}}>
                 <img id="uploadImage" src={this.props.imageUrl} style={{maxWidth:"500px"}} alt=""/>
                 {this.displayBox()}
-
                 </Tilt>
             </div>
         )
