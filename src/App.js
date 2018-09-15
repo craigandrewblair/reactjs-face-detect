@@ -21,7 +21,8 @@ class App extends Component {
         input: 'https://samples.clarifai.com/face-det.jpg',
         imageUrl: 'https://samples.clarifai.com/face-det.jpg',
         box: {},
-        signin: 'signin'
+        signin: 'signin',
+        uploads: 0
     }
   }
 
@@ -90,7 +91,7 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{minHeight:"100vh"}}>
-      <Particles />
+      {/* <Particles /> */}
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
         { this.state.signin === 'home' ? <Score /> : <div></div> }
