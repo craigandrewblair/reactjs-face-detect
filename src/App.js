@@ -26,7 +26,7 @@ class App extends Component {
     }
   }
 
-  onSigninSubmit = () => {
+  onDetectSubmit = () => {
     this.setState({
       imageUrl: this.state.input
     });
@@ -34,8 +34,7 @@ class App extends Component {
     .then(response =>
     this.displayBox(this.calcBoxLocation(response))
     .catch(err => console.log(err))
-  )
-  }
+  )}
 
   calcBoxLocation = (location) => {
     let image = document.getElementById('uploadImage');
@@ -58,12 +57,7 @@ class App extends Component {
     console.log(this.state.box);
   }
 
-  onInputChange = (event) => {
-    this.setState({
-      input: event.target.value
-    });
-  }
-
+  // Page state management
   signOutHandler = () => {
     this.setState({
       signin: 'signin'
@@ -86,6 +80,13 @@ class App extends Component {
     this.setState({
       signin: 'home'
     })
+  }
+
+  // Signin input onChange
+  onInputChange = (event) => {
+    this.setState({
+      input: event.target.value
+    });
   }
 
   render() {
@@ -112,7 +113,7 @@ class App extends Component {
       </div>
       :
       <div>
-        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onSigninSubmit} />
+        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} onDetectSubmit={this.onDetectSubmit} />
         <FaceRecognition imageUrl={this.state.imageUrl} box={this.state.box}/>
       </div>
       }
