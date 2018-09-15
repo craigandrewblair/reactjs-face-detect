@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Tilt from 'react-tilt';
 import './FaceRecognition.css';
-import Box from './Box';
+import Box from '../../components/Box/Box';
 var uniqid = require('uniqid');
 
 class FaceRecognition extends Component {

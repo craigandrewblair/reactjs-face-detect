@@ -3,10 +3,10 @@ import './App.css';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageUrlForm from './components/ImageUrlForm/ImageUrlForm';
-import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import FaceRecognition from './containers/FaceRecognition/FaceRecognition';
 import Score from './components/Score/Score';
-import Signin from './components/Signin/Signin';
-import Register from './components/Register/Register';
+import Signin from './containers/Signin/Signin';
+import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
@@ -26,7 +26,7 @@ class App extends Component {
     }
   }
 
-  onDetectClick = () => {
+  onSigninSubmit = () => {
     this.setState({
       imageUrl: this.state.input
     });
@@ -112,7 +112,7 @@ class App extends Component {
       </div>
       :
       <div>
-        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onDetectClick} />
+        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} detectClick={this.onSigninSubmit} />
         <FaceRecognition imageUrl={this.state.imageUrl} box={this.state.box}/>
       </div>
       }
