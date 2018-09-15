@@ -88,7 +88,6 @@ class App extends Component {
   }
 
   render() {
-    {console.log(this.state.box.length)}
     return (
       <div className="App" style={{minHeight:"100vh"}}>
       <Particles />

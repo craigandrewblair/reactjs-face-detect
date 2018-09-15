@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Tilt from 'react-tilt';
 import './FaceRecognition.css';
 import Box from './Box';
+var uniqid = require('uniqid');
 
 class FaceRecognition extends Component {
 
@@ -19,6 +20,7 @@ class FaceRecognition extends Component {
                 <div>
                     {boxes.map((box) =>
                     <Box
+                    key={uniqid()}
                     className="bounding-box"
                     style={{
                         right: box.right_col,
