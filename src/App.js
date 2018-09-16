@@ -22,18 +22,36 @@ class App extends Component {
         imageUrl: 'https://samples.clarifai.com/face-det.jpg',
         box: {},
         signin: 'signin',
-        uploads: 0
+        uploads: 0,
+        user: {
+          id: '',
+          name: '',
+          email: '',
+          password: '',
+          score: 0,
+          joindate: new Date()
+        }
     }
   }
 
+  // FaceRecognition
   onDetectSubmit = () => {
-    this.setState({
-      imageUrl: this.state.input
-    });
+    this.setState({ imageUrl: this.state.input });
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-    .then(response =>
+    .then(response => {
+      if(response){
+        fetch('http://localhost:4000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                score: this.state.score++
+            })
+        });
+      }else{
+
+      }
     this.displayBox(this.calcBoxLocation(response))
-    .catch(err => console.log(err))
+    }
   )}
 
   calcBoxLocation = (location) => {
@@ -54,7 +72,6 @@ class App extends Component {
 
   displayBox = (boxCoords) => {
     this.setState({box: boxCoords});
-    console.log(this.state.box);
   }
 
   // Page state management
@@ -82,10 +99,24 @@ class App extends Component {
     })
   }
 
-  // Signin input onChange
+  // Signin
   onInputChange = (event) => {
     this.setState({
       input: event.target.value
+    });
+  }
+
+  // Register
+  loadUser = (user) => {
+    this.setState({
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        score: 0,
+        joindate: new Date()
+      }
     });
   }
 
@@ -109,7 +140,7 @@ class App extends Component {
       this.state.signin === 'register' 
       ?
       <div style={{zIndex:"2"}}>
-        <Register registerPageHandler={this.registerPageHandler}/> 
+        <Register signInHandler={this.signInHandler} loadUser={this.loadUser}/> 
       </div>
       :
       <div>
