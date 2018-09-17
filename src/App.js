@@ -15,13 +15,12 @@ var uniqid = require('uniqid');
 const app = new Clarifai.App({
   apiKey: process.env.REACT_APP_FACE_KEY
  });
-// https://samples.clarifai.com/face-det.jpg
 class App extends Component {
   constructor(){
     super();
     this.state = {
-        input: '',
-        imageUrl: '',
+        input: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
+        imageUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
         box: {},
         signin: 'signin',
         refresh: false,
@@ -42,27 +41,26 @@ class App extends Component {
     this.setState({
       imageUrl: this.state.input
     });
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-    .then(response => {
-      if(response){
-        fetch('http://localhost:4000/image', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ id: this.state.user.id })
-        })
-        .then(response => response.json())
-        .then(user => {
-            this.signInHandler(user);
-            this.displayImageBox(response);
-        })
-        .then(data => {
-          return this.boxRenderUpdate();
-        })
-        }
-        
+      app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+      .then(response => {
+        if(response){
+          fetch('http://localhost:4000/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ id: this.state.user.id })
+          })
+          .then(response => response.json())
+          .then(user => {
+              this.signInHandler(user);
+              this.displayImageBox(response);
+          })
+          .then(data => {
+            return this.boxRenderUpdate();
+          })
+        }       
       })
   console.log(this.state.user.score);
-  }
+}
 
   // FaceRecognition
   boxRenderUpdate = () => {
@@ -78,7 +76,6 @@ class App extends Component {
             this.displayImageBox(response);
         })      
       })
-  console.log(this.state.user.score);
   }
 
   displayImageBox = (data) => {
