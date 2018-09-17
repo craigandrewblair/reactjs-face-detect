@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Score = () => {
+const Score = ({score, name}) => {
 
     return (
         <div className="f2 ma4 white">
-            {'Faces Detected: '}
+            {`${name} your upload score is ${score}`}
         </div>
     )
 

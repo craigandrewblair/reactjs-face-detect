@@ -10,19 +10,21 @@ import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
+var uniqid = require('uniqid');
+
 const app = new Clarifai.App({
   apiKey: process.env.REACT_APP_FACE_KEY
  });
-
+// https://samples.clarifai.com/face-det.jpg
 class App extends Component {
   constructor(){
     super();
     this.state = {
-        input: 'https://samples.clarifai.com/face-det.jpg',
-        imageUrl: 'https://samples.clarifai.com/face-det.jpg',
+        input: '',
+        imageUrl: '',
         box: {},
         signin: 'signin',
-        uploads: 0,
+        refresh: false,
         user: {
           id: '',
           name: '',
@@ -32,27 +34,59 @@ class App extends Component {
           joindate: new Date()
         }
     }
+    
   }
 
   // FaceRecognition
   onDetectSubmit = () => {
-    this.setState({ imageUrl: this.state.input });
+    this.setState({
+      imageUrl: this.state.input
+    });
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
     .then(response => {
       if(response){
         fetch('http://localhost:4000/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                score: this.state.score++
-            })
-        });
-      }else{
+            body: JSON.stringify({ id: this.state.user.id })
+        })
+        .then(response => response.json())
+        .then(user => {
+            this.signInHandler(user);
+            this.displayImageBox(response);
+        })
+        .then(data => {
+          return this.boxRenderUpdate();
+        })
+        }
+        
+      })
+  console.log(this.state.user.score);
+  }
 
-      }
-    this.displayBox(this.calcBoxLocation(response))
-    }
-  )}
+  // FaceRecognition
+  boxRenderUpdate = () => {
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+    .then(response => {
+        fetch('http://localhost:4000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id: this.state.user.id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            this.displayImageBox(response);
+        })      
+      })
+  console.log(this.state.user.score);
+  }
+
+  displayImageBox = (data) => {
+    this.setState({
+      imageUrl: this.state.input,
+      box: this.calcBoxLocation(data)}
+    )
+  }
 
   calcBoxLocation = (location) => {
     let image = document.getElementById('uploadImage');
@@ -70,20 +104,24 @@ class App extends Component {
     return arr;
   }
 
-  displayBox = (boxCoords) => {
-    this.setState({box: boxCoords});
-  }
-
   // Page state management
   signOutHandler = () => {
     this.setState({
-      signin: 'signin'
+      signin: 'signin',
     })
   }
 
-  signInHandler = () => {
+  signInHandler = (user) => {
     this.setState({
-      signin: 'home'
+      signin: 'home',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        score: user.score,
+        joindate: new Date()
+      }
     })
   }
 
@@ -93,10 +131,18 @@ class App extends Component {
     })
   }
 
-  registerPageHandler = () => {
+  registerPageHandler = (user) => {
     this.setState({
-      signin: 'home'
+      signin: 'home',
+      user: {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        score: 0,
+        joindate: new Date()
+      }
     })
+    this.loadUser(user);
   }
 
   // Signin
@@ -106,27 +152,28 @@ class App extends Component {
     });
   }
 
-  // Register
+  // Register - loads the user to frontend after user has been created on server side
   loadUser = (user) => {
     this.setState({
       user: {
-        id: '',
-        name: '',
-        email: '',
-        password: '',
-        score: 0,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        score: user.score,
         joindate: new Date()
       }
-    });
+    });  
   }
 
   render() {
+    console.log(this.state);
     return (
       <div className="App" style={{minHeight:"100vh"}}>
       {/* <Particles /> */}
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
-        { this.state.signin === 'home' ? <Score /> : <div></div> }
+        { this.state.signin === 'home' ? <Score  name={this.state.user.name} score={this.state.user.score} loadUser={this.loadUser} /> : <div></div> }
         <Navigation signOutHandler={this.signOutHandler} signinState={this.state.signin}/>
       </header>
       
@@ -140,7 +187,7 @@ class App extends Component {
       this.state.signin === 'register' 
       ?
       <div style={{zIndex:"2"}}>
-        <Register signInHandler={this.signInHandler} loadUser={this.loadUser}/> 
+        <Register registerPageHandler={this.registerPageHandler} loadUser={this.loadUser}/> 
       </div>
       :
       <div>

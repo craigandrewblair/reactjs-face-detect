@@ -43,7 +43,7 @@ class Register extends React.Component {
         .then(response => response.json())
         .then(user => {
             if(user.name !== '' && user.email !== '' && user.password !== ''){
-                this.props.signInHandler();
+                this.props.registerPageHandler(user);
             }else{
                 console.log('Please provide all fields')
             }
