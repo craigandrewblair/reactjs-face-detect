@@ -32,9 +32,9 @@ class Signin extends React.Component {
             })
         })
         .then(response => response.json())
-        .then(data => {
-            if(data.email === this.state.email && data.password === this.state.password){
-                this.props.signInHandler(data);
+        .then(user => {
+            if(user.id){
+                this.props.signInHandler(user);
             }else{
                 console.log('Invalid email or password')
             }
