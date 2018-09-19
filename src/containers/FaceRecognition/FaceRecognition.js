@@ -42,7 +42,7 @@ class FaceRecognition extends Component {
             <div>
                 <Tilt 
                 style={{ padding:"30px", margin:"30px", zIndex:"3", display:"flex",alignItems:"center",flexDirection:"column"}}>
-                <img id="uploadImage" src={this.props.imageUrl} style={{maxWidth:"500px"}} alt=""/>
+                <img id="uploadImage" src={this.props.imageUrl} style={{width:"700px"}} alt=""/>
                 {this.displayBox()}
                 </Tilt>
             </div>

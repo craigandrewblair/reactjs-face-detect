@@ -10,8 +10,6 @@ import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
-var uniqid = require('uniqid');
-
 const app = new Clarifai.App({
   apiKey: process.env.REACT_APP_FACE_KEY
  });
@@ -33,57 +31,49 @@ class App extends Component {
           joindate: new Date()
         }
     }
-    
   }
 
   // FaceRecognition
   onDetectSubmit = () => {
-    this.setState({
-      imageUrl: this.state.input
-    });
-      app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-      .then(response => {
-        if(response){
-          fetch('http://localhost:4000/image', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
+      this.setState({
+        imageUrl: this.state.input
+      });
+        app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+        .then(response => {
+          if(response){
+            fetch('http://localhost:4000/image', {
+              method: 'put',
+              headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ id: this.state.user.id })
-          })
-          .then(response => response.json())
-          .then(user => {
-              this.signInHandler(user);
-              this.displayImageBox(response);
-          })
-          .then(data => {
-            return this.boxRenderUpdate();
-          })
-        }       
-      })
-  console.log(this.state.user.score);
-}
-
-  // FaceRecognition
-  boxRenderUpdate = () => {
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-    .then(response => {
-        fetch('http://localhost:4000/image', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ id: this.state.user.id })
+            })
+            .then(response => response.json())
+            .then(user => {
+              let score = user;
+              this.updateView(response, score);
+              this.displayBox(this.calcBoxLocation(response));
+            })
+          }       
         })
-        .then(response => response.json())
-        .then(data => {
-            this.displayImageBox(response);
-        })      
-      })
   }
 
-  displayImageBox = (data) => {
+  updateView = (data, score) => {
     this.setState({
-      imageUrl: this.state.input,
-      box: this.calcBoxLocation(data)}
-    )
+      user: {
+        id: this.state.user.id,
+        name: this.state.user.name,
+        email: this.state.user.email,
+        password: this.state.user.password,
+        score: score,
+        joindate: this.state.user.joindate
+      }
+    })
   }
+
+  displayBox = (b) => {
+    this.setState({
+      box: b
+    })
+  } 
 
   calcBoxLocation = (location) => {
     let image = document.getElementById('uploadImage');
@@ -101,7 +91,6 @@ class App extends Component {
     return arr;
   }
 
-  // Page state management
   signOutHandler = () => {
     this.setState({
       signin: 'signin',
@@ -142,14 +131,12 @@ class App extends Component {
     this.loadUser(user);
   }
 
-  // Signin
   onInputChange = (event) => {
     this.setState({
       input: event.target.value
     });
   }
 
-  // Register - loads the user to frontend after user has been created on server side
   loadUser = (user) => {
     this.setState({
       user: {
@@ -166,10 +153,10 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{minHeight:"100vh"}}>
-      {/* <Particles /> */}
+      <Particles />
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
-        { this.state.signin === 'home' ? <Score  name={this.state.user.name} score={this.state.user.score} loadUser={this.loadUser} /> : <div></div> }
+        { this.state.signin === 'home' ? <Score  name={this.state.user.name} score={this.state.user.score}/> : <div></div> }
         <Navigation signOutHandler={this.signOutHandler} signinState={this.state.signin}/>
       </header>
       
