@@ -21,7 +21,7 @@ class App extends Component {
         imageUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
         box: {},
         signin: 'signin',
-        refresh: false,
+        upload: false,
         user: {
           id: '',
           name: '',
@@ -33,28 +33,34 @@ class App extends Component {
     }
   }
 
-  // FaceRecognition
   onDetectSubmit = () => {
+    if(this.state.imageUrl !== this.state.input){
       this.setState({
-        imageUrl: this.state.input
+        imageUrl: this.state.input,
+        upload: false
       });
-        app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-        .then(response => {
-          if(response){
-            fetch('http://localhost:4000/image', {
-              method: 'put',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({ id: this.state.user.id })
-            })
-            .then(response => response.json())
-            .then(user => {
-              let score = user;
-              this.updateView(response, score);
-              this.displayBox(this.calcBoxLocation(response));
-            })
-          }       
-        })
-  }
+    }else{
+      this.setState({ upload: true });
+    }
+    if(this.state.upload === false){
+      app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+      .then(response => {
+        if(response){
+          fetch('http://localhost:4000/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id: this.state.user.id })
+          })
+          .then(response => response.json())
+          .then(user => {
+            let score = user;
+            this.updateView(response, score);
+            this.displayBox(this.calcBoxLocation(response));
+          })
+        }       
+      })
+    }
+  }    
 
   updateView = (data, score) => {
     this.setState({
@@ -174,7 +180,7 @@ class App extends Component {
       </div>
       :
       <div>
-        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} onDetectSubmit={this.onDetectSubmit} />
+        <ImageUrlForm onInputChange={this.onInputChange} input={this.state.input} onDetectSubmit={this.onDetectSubmit} upload={this.state.upload}/>
         <FaceRecognition imageUrl={this.state.imageUrl} box={this.state.box}/>
       </div>
       }
