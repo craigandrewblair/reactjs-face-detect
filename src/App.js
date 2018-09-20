@@ -10,27 +10,29 @@ import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
 import Clarifai from 'clarifai';
 
+const initialState = {
+  input: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
+  imageUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
+  box: {},
+  signin: 'signin',
+  upload: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    score: 0,
+    joindate: new Date()
+  }
+}
+
 const app = new Clarifai.App({
   apiKey: process.env.REACT_APP_FACE_KEY
  });
 class App extends Component {
   constructor(){
     super();
-    this.state = {
-        input: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
-        imageUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
-        box: {},
-        signin: 'signin',
-        upload: false,
-        user: {
-          id: '',
-          name: '',
-          email: '',
-          password: '',
-          score: 0,
-          joindate: new Date()
-        }
-    }
+    this.state = initialState;
   }
 
   onDetectSubmit = () => {
@@ -98,9 +100,7 @@ class App extends Component {
   }
 
   signOutHandler = () => {
-    this.setState({
-      signin: 'signin',
-    })
+    this.setState(initialState);
   }
 
   signInHandler = (user) => {
@@ -157,6 +157,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <div className="App" style={{minHeight:"100vh"}}>
       <Particles />
