@@ -1,5 +1,7 @@
 import React from 'react';
 
+const backendHost = "https://dashboard.heroku.com/apps/evening-reef-63407";
+
 class Signin extends React.Component {
 
     constructor (props) {
@@ -23,7 +25,7 @@ class Signin extends React.Component {
     }
 
     onSignInSubmit = () => {
-        fetch('http://localhost:4000/signin', {
+        fetch(`'${backendHost}/signin'`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

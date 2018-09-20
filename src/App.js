@@ -9,6 +9,8 @@ import Signin from './containers/Signin/Signin';
 import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
 
+const backendHost = "https://dashboard.heroku.com/apps/evening-reef-63407";
+
 const initialState = {
   input: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
   imageUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
@@ -34,7 +36,7 @@ class App extends Component {
   onDetectSubmit = () => {
     this.state.imageUrl !== this.state.input ? this.setState({ imageUrl: this.state.input, upload: false }) : this.setState({ upload: true });
     if(this.state.upload === false){
-      fetch('http://localhost:4000/imageurl', {
+      fetch(`'${backendHost}/imageurl'`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ 
@@ -44,7 +46,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if(response){
-          fetch('http://localhost:4000/image', {
+          fetch(`'${backendHost}:4000/image'`, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ id: this.state.user.id })
