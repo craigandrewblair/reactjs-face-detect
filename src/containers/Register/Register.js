@@ -1,7 +1,5 @@
 import React from 'react';
 
-const backendHost = "https://dashboard.heroku.com/apps/evening-reef-63407";
-
 class Register extends React.Component {
 
     constructor (props) {
@@ -20,7 +18,7 @@ class Register extends React.Component {
     onPasswordChange = (event) => this.setState({ password: event.target.value });
 
     onRegisterSubmit = () => {
-        fetch(`'${backendHost}/register'`, {
+        fetch('https://evening-reef-63407.herokuapp.com/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

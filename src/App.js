@@ -9,8 +9,6 @@ import Signin from './containers/Signin/Signin';
 import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
 
-const backendHost = "https://dashboard.heroku.com/apps/evening-reef-63407";
-
 const initialState = {
   input: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
   imageUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
@@ -36,7 +34,7 @@ class App extends Component {
   onDetectSubmit = () => {
     this.state.imageUrl !== this.state.input ? this.setState({ imageUrl: this.state.input, upload: false }) : this.setState({ upload: true });
     if(this.state.upload === false){
-      fetch(`'${backendHost}/imageurl'`, {
+      fetch('https://evening-reef-63407.herokuapp.com/imageurl', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ 
@@ -46,7 +44,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if(response){
-          fetch(`'${backendHost}:4000/image'`, {
+          fetch('https://evening-reef-63407.herokuapp.com:4000/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ id: this.state.user.id })
@@ -148,7 +146,7 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{minHeight:"100vh"}}>
-      <Particles />
+      {/* <Particles /> */}
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
         { this.state.signin === 'home' ? <Score  name={this.state.user.name} score={this.state.user.score}/> : <div></div> }
