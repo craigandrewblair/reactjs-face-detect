@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import Tilt from 'react-tilt';
 import './FaceRecognition.css';
+
 var uniqid = require('uniqid');
-
 class FaceRecognition extends Component {
-
-    constructor(props){
-        super();
-        this.state = {
-
-        }
-    }
 
     displayBox = () => {
         let boxes = [...this.props.box];
@@ -38,7 +31,6 @@ class FaceRecognition extends Component {
 
     render(){
         return (
-        
             <div>
                 <Tilt 
                 style={{ padding:"30px", margin:"30px", zIndex:"3", display:"flex",alignItems:"center",flexDirection:"column"}}>

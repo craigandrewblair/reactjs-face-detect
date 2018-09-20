@@ -26,9 +26,7 @@ const initialState = {
   }
 }
 
-const app = new Clarifai.App({
-  apiKey: process.env.REACT_APP_FACE_KEY
- });
+const app = new Clarifai.App({ apiKey: process.env.REACT_APP_FACE_KEY });
 class App extends Component {
   constructor(){
     super();
@@ -36,14 +34,7 @@ class App extends Component {
   }
 
   onDetectSubmit = () => {
-    if(this.state.imageUrl !== this.state.input){
-      this.setState({
-        imageUrl: this.state.input,
-        upload: false
-      });
-    }else{
-      this.setState({ upload: true });
-    }
+    this.state.imageUrl !== this.state.input ? this.setState({ imageUrl: this.state.input, upload: false }) : this.setState({ upload: true });
     if(this.state.upload === false){
       app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
       .then(response => {
@@ -61,6 +52,7 @@ class App extends Component {
           })
         }       
       })
+      .catch(console.log);
     }
   }    
 
@@ -77,11 +69,7 @@ class App extends Component {
     })
   }
 
-  displayBox = (b) => {
-    this.setState({
-      box: b
-    })
-  } 
+  displayBox = (b) => this.setState({ box: b })
 
   calcBoxLocation = (location) => {
     let image = document.getElementById('uploadImage');
@@ -99,9 +87,7 @@ class App extends Component {
     return arr;
   }
 
-  signOutHandler = () => {
-    this.setState(initialState);
-  }
+  signOutHandler = () => this.setState(initialState)
 
   signInHandler = (user) => {
     this.setState({
@@ -117,11 +103,7 @@ class App extends Component {
     })
   }
 
-  registerHandler = () => {
-    this.setState({
-      signin: 'register'
-    })
-  }
+  registerHandler = () => this.setState({ signin: 'register' })
 
   registerPageHandler = (user) => {
     this.setState({
@@ -157,7 +139,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="App" style={{minHeight:"100vh"}}>
       <Particles />
@@ -186,7 +167,6 @@ class App extends Component {
       </div>
       }
       </main>
-
       </div>
     );
   }

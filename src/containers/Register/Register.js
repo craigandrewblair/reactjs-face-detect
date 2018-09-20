@@ -1,6 +1,4 @@
-
 import React from 'react';
-
 class Register extends React.Component {
 
     constructor (props) {
@@ -12,23 +10,11 @@ class Register extends React.Component {
         }
     }
 
-    onNameChange = (event) => {
-        this.setState({
-            name: event.target.value
-        });
-    }
+    onNameChange = (event) => this.setState({ name: event.target.value });
 
-    onEmailChange = (event) => {
-        this.setState({
-            email: event.target.value
-        });
-    }
+    onEmailChange = (event) => this.setState({ email: event.target.value })
 
-    onPasswordChange = (event) => {
-        this.setState({
-            password: event.target.value
-        });
-    }
+    onPasswordChange = (event) => this.setState({ password: event.target.value });
 
     onRegisterSubmit = () => {
         fetch('http://localhost:4000/register', {
@@ -48,6 +34,7 @@ class Register extends React.Component {
                 console.log('Please provide all fields')
             }
         })
+        .catch(console.log());
     }
 
 
