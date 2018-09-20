@@ -146,7 +146,7 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{minHeight:"100vh"}}>
-      {/* <Particles /> */}
+      <Particles />
       <header style={{width:"100vw", display:"flex", flexDirection:"row", justifyContent:"space-between", paddingTop:"50px"}}>
         <Logo />
         { this.state.signin === 'home' ? <Score  name={this.state.user.name} score={this.state.user.score}/> : <div></div> }
