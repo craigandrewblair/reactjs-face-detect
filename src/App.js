@@ -8,7 +8,6 @@ import Score from './components/Score/Score';
 import Signin from './containers/Signin/Signin';
 import Register from './containers/Register/Register';
 import Particles from './components/Particles/Particles';
-import Clarifai from 'clarifai';
 
 const initialState = {
   input: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tickera.com%2Fblog%2Fwp-content%2Fuploads%2F2014%2F09%2FBusiness-People.jpg&f=1',
@@ -26,7 +25,6 @@ const initialState = {
   }
 }
 
-const app = new Clarifai.App({ apiKey: process.env.REACT_APP_FACE_KEY });
 class App extends Component {
   constructor(){
     super();
@@ -36,7 +34,14 @@ class App extends Component {
   onDetectSubmit = () => {
     this.state.imageUrl !== this.state.input ? this.setState({ imageUrl: this.state.input, upload: false }) : this.setState({ upload: true });
     if(this.state.upload === false){
-      app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+      fetch('http://localhost:4000/imageurl', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ 
+          imageUrl: this.state.imageUrl 
+        })
+      })
+      .then(response => response.json())
       .then(response => {
         if(response){
           fetch('http://localhost:4000/image', {
